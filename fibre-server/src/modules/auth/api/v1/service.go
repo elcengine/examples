@@ -33,6 +33,7 @@ func registerUser(c *fiber.Ctx, payload dto.RegisterReq) *dto.LoginRes {
 	user := models.UserModel.Create(models.User{
 		Email:    payload.Email,
 		Name:     payload.Name,
+		Age:      payload.Age,
 		Verified: true,
 		Password: utils.HashStr(payload.Password),
 	}).Exec().(models.User)

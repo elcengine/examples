@@ -17,4 +17,5 @@ type RegisterReq struct {
 	Name     string `validate:"required"`
 	Email    string `validate:"required,email"`
 	Password string `validate:"required,min=8"`
+	Age      int    `validate:"required"`
 }

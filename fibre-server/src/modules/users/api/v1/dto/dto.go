@@ -9,6 +9,7 @@ import (
 type CreateUserReq struct {
 	Name          string `validate:"required"`
 	Email         string `validate:"required,email"`
+	Age           int    `validate:"required"`
 	Role          string
 	Organizations []string
 }
@@ -25,6 +26,7 @@ type GetUserByIDRes = models.User
 type UpdateUserReq struct {
 	Name          string
 	Email         string `validate:"email"`
+	Age           int
 	Role          string
 	Organizations []string
 }

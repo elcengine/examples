@@ -2,6 +2,8 @@ package models
 
 import (
 	"reflect"
+	"time"
+
 	"github.com/elcengine/elemental/core"
 	"github.com/samber/lo"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -16,16 +18,17 @@ const (
 )
 
 type User struct {
-	ID               primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	ID               primitive.ObjectID `json:"_id" bson:"_id"`
 	Name             string             `json:"name" bson:"name,omitempty"`
 	Email            string             `json:"email" bson:"email,omitempty"`
+	Age              int                `json:"age" bson:"age,omitempty"`
 	Password         string             `json:"password" bson:"password,omitempty"`
 	Organizations    []string           `json:"organizations" bson:"organizations"`
 	Verified         bool               `json:"verified" bson:"verified"`
 	VerificationCode *string            `json:"verification_code" bson:"verification_code,omitempty"`
 	Role             UserRole           `json:"role" bson:"role,omitempty"`
-	CreatedAt        string             `json:"created_at" bson:"created_at,omitempty"`
-	UpdatedAt        string             `json:"updated_at" bson:"updated_at,omitempty"`
+	CreatedAt        time.Time          `json:"created_at" bson:"created_at"`
+	UpdatedAt        time.Time          `json:"updated_at" bson:"updated_at"`
 }
 
 var UserModel = elemental.NewModel[User]("User", elemental.NewSchema(map[string]elemental.Field{
@@ -40,8 +43,11 @@ var UserModel = elemental.NewModel[User]("User", elemental.NewSchema(map[string]
 			Unique: lo.ToPtr(true),
 		},
 	},
+	"Age": {
+		Type: reflect.Int,
+	},
 	"Password": {
-		Type:    reflect.String,
+		Type:     reflect.String,
 		Required: true,
 	},
 	"Organizations": {

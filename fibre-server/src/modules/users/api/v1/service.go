@@ -6,6 +6,9 @@ import (
 	"mailman/src/modules/users/api/v1/models"
 	"mailman/src/utils"
 
+	filter_query "github.com/elcengine/elemental/plugins/filter-query"
+	filter_query_middleware "github.com/elcengine/elemental/plugins/filter-query/middleware"
+	e_utils "github.com/elcengine/elemental/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/google/uuid"
@@ -32,7 +35,7 @@ func createUser(c *fiber.Ctx, payload dto.CreateUserReq) dto.CreateUserRes {
 }
 
 func getAllUsers(c *fiber.Ctx) dto.GetAllUsersRes {
-	users := models.UserModel.Find().Exec().([]models.User)
+	users := models.UserModel.Find(e_utils.Cast[filter_query.FilterQueryResult](c.Locals(filter_query_middleware.CTXKey)).Filters).Exec().([]models.User)
 	return users
 }
 
