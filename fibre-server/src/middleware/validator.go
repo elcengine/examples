@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	sentinel "github.com/elcengine/elemental/plugins/sentinel"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
@@ -33,6 +34,32 @@ func Validate[T any](segment int) func(*fiber.Ctx) error {
 			for _, err := range errs.(validator.ValidationErrors) {
 				formattedErrs = append(formattedErrs, fmt.Sprintf("%s failed on the '%s' tag against value '%s'", err.Field(), err.Tag(), err.Value()))
 			}
+		}
+		if len(formattedErrs) > 0 {
+			panic(fiber.NewError(fiber.StatusUnprocessableEntity, strings.Join(formattedErrs, " , ")))
+		}
+		return ctx.Next()
+	}
+}
+
+func ReqValidate[T any](segment int) func(*fiber.Ctx) error {
+	return func(ctx *fiber.Ctx) error {
+		target := new(T)
+		switch segment {
+		case Body:
+			ctx.BodyParser(target)
+		case Params:
+			ctx.ParamsParser(target)
+		case Query:
+			ctx.QueryParser(target)
+		}
+		formattedErrs := []string{}
+		errs := sentinel.Legitimize(*target)
+		fmt.Println(errs)
+		fmt.Println(*target)
+		if errs != nil {
+			panic(fiber.NewError(fiber.StatusUnprocessableEntity, errs.Error()))
+			
 		}
 		if len(formattedErrs) > 0 {
 			panic(fiber.NewError(fiber.StatusUnprocessableEntity, strings.Join(formattedErrs, " , ")))
