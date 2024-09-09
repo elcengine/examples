@@ -19,3 +19,10 @@ type RegisterReq struct {
 	Password string `validate:"required,min=8"`
 	Age      int    `validate:"required"`
 }
+
+type CreateUserDTO struct {
+	Name string `augmented_validate:"unique=users" json:"name"`
+	Email    string `validate:"required,email"`
+	Age  int    `validate:"max=150,min=18" json:"age"`
+	Password string `validate:"required,min=8"`
+}
