@@ -34,9 +34,16 @@ func createUser(c *fiber.Ctx, payload dto.CreateUserReq) dto.CreateUserRes {
 	}
 }
 
-func getAllUsers(c *fiber.Ctx) dto.GetAllUsersRes {
-	users := models.UserModel.Find(e_utils.Cast[filter_query.FilterQueryResult](c.Locals(filter_query_middleware.CTXKey)).Filters).Exec().([]models.User)
-	return users
+func getAllUsers(c *fiber.Ctx) any {
+	filterQueryResult := e_utils.Cast[filter_query.FilterQueryResult](c.Locals(filter_query_middleware.CTXKey))
+	var result any
+	q :=  models.UserModel.Find(filterQueryResult.Filters).Sort(filterQueryResult.Sorts).Select(filterQueryResult.Select)
+	if (c.Query("page") != "" && c.Query("limit") != "") {
+		result =q.Paginate(int64(c.QueryInt("page")),int64( c.QueryInt("limit"))).Exec()
+	} else {
+		result =q.Exec()
+	}
+	return result
 }
 
 func getUserByID(c *fiber.Ctx, id string) dto.GetUserByIDRes {

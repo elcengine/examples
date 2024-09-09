@@ -18,17 +18,17 @@ const (
 )
 
 type User struct {
-	ID               primitive.ObjectID `json:"_id" bson:"_id"`
-	Name             string             `json:"name" bson:"name,omitempty"`
-	Email            string             `json:"email" bson:"email,omitempty"`
-	Age              int                `json:"age" bson:"age,omitempty"`
-	Password         string             `json:"password" bson:"password,omitempty"`
-	Organizations    []string           `json:"organizations" bson:"organizations"`
-	Verified         bool               `json:"verified" bson:"verified"`
-	VerificationCode *string            `json:"verification_code" bson:"verification_code,omitempty"`
-	Role             UserRole           `json:"role" bson:"role,omitempty"`
-	CreatedAt        time.Time          `json:"created_at" bson:"created_at"`
-	UpdatedAt        time.Time          `json:"updated_at" bson:"updated_at"`
+	ID               primitive.ObjectID `json:"_id,omitempty" bson:"_id"`
+	Name             string             `json:"name,omitempty" bson:"name,omitempty"`
+	Email            string             `json:"email,omitempty" bson:"email,omitempty"`
+	Age              int                `json:"age,omitempty" bson:"age,omitempty"`
+	Password         string             `json:"password,omitempty" bson:"password,omitempty"`
+	Organizations    []string           `json:"organizations,omitempty" bson:"organizations"`
+	Verified         bool               `json:"verified,omitempty" bson:"verified"`
+	VerificationCode *string            `json:"verification_code,omitempty" bson:"verification_code,omitempty"`
+	Role             UserRole           `json:"role,omitempty" bson:"role,omitempty"`
+	CreatedAt        *time.Time         `json:"created_at,omitempty" bson:"created_at"`
+	UpdatedAt        *time.Time         `json:"updated_at,omitempty" bson:"updated_at"`
 }
 
 var UserModel = elemental.NewModel[User]("User", elemental.NewSchema(map[string]elemental.Field{

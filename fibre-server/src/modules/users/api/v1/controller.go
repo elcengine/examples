@@ -18,7 +18,7 @@ func Create(c *fiber.Ctx) error {
 
 func GetAll(c *fiber.Ctx) error {
 	res := getAllUsers(c)
-	return c.Status(fiber.StatusCreated).JSON(global.Response[dto.GetAllUsersRes]{
+	return c.Status(fiber.StatusCreated).JSON(global.Response[any]{
 		Message: "Users fetched successfully",
 		Data:    &res,
 	})
