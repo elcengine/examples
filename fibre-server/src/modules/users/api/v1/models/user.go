@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/elcengine/elemental/core"
+	"github.com/gofiber/fiber/v2/log"
 	"github.com/samber/lo"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -67,7 +68,15 @@ var UserModel = elemental.NewModel[User]("User", elemental.NewSchema(map[string]
 	},
 }, elemental.SchemaOptions{
 	Collection: "users",
+	Auditing: true,
 }))
+
+func RegisterHooks() {
+	UserModel.PreSave(func(doc User) bool {
+		log.Info("User is about to be saved", doc)
+		return true
+	})
+}
 
 func (u User) Secure() User {
 	u.Password = ""

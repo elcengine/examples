@@ -3,6 +3,7 @@ package modules
 import (
 	"mailman/src/middleware"
 	"mailman/src/modules/auth"
+	"mailman/src/modules/background"
 	"mailman/src/modules/system"
 	"mailman/src/modules/users"
 
@@ -10,6 +11,9 @@ import (
 )
 
 func New() *fiber.App {
+
+	background.InitializeTasks()
+
 	modules := fiber.New()
 
 	modules.Mount("/auth", auth.New())

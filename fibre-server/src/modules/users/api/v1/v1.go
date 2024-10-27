@@ -10,6 +10,7 @@ import (
 
 func New() *fiber.App {
 	models.UserModel.SyncIndexes()
+	models.RegisterHooks()
 	v1 := fiber.New()
 	v1.Post("/", m.Validate[dto.CreateUserReq](m.Body), Create)
 	v1.Get("/", filter_query_middleware.Parse, GetAll)

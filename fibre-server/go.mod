@@ -3,7 +3,7 @@ module mailman
 go 1.21.3
 
 require (
-	github.com/elcengine/elemental v0.0.7
+	github.com/elcengine/elemental v0.0.9
 	github.com/go-playground/validator/v10 v10.22.0
 	github.com/gofiber/fiber/v2 v2.52.5
 	github.com/golang-jwt/jwt/v5 v5.0.0
